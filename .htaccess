@@ -1,0 +1,41 @@
+<IfModule mod_deflate.c>
+    # --- Kompresi untuk text dan script ---
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+
+    # --- Kompresi untuk font ---
+    AddOutputFilterByType DEFLATE application/font-woff
+    AddOutputFilterByType DEFLATE application/font-woff2
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE image/svg+xml
+
+    # --- Aturan browser spesifik (legacy) ---
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+</IfModule>
+
+# --- Header Vary untuk cache browser ---
+<IfModule mod_headers.c>
+    Header append Vary Accept-Encoding
+</IfModule>
+
+# --- Non-kompresi untuk file besar/biner ---
+<FilesMatch "\.(?:jpg|jpeg|png|gif|ico|zip|gz|rar|mp3|mp4|avi|pdf)$">
+    SetEnv no-gzip 1
+</FilesMatch>
+
+# --- Optional: matikan kompresi untuk sitemap atau robots ---
+<FilesMatch "\.(?:xml|txt)$">
+    SetEnv no-gzip 0
+</FilesMatch>
